@@ -10,7 +10,7 @@ import com.APIPlatform.API_platform.Service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/users")
 @RestController
 @CrossOrigin
 
@@ -26,8 +26,8 @@ public class UserController {
     }
 
     /**
-     * Endpoint to handle user sign-up.
-     * Receives a UserDTO object from the request body and adds the user to the system.
+     * Endpoint to handle user_id sign-up.
+     * Receives a UserDTO object from the request body and adds the user_id to the system.
      *
      * @param userDTO User details for sign-up.
      * @return ResponseEntity containing the created User entity.
@@ -35,13 +35,13 @@ public class UserController {
     @PostMapping(path = "/signup")
     public ResponseEntity<User> signupUser(@RequestBody UserDTO userDTO)
     {
-        User signedUpUser = userService.addUser(userDTO); // Call the user service to add a new user
-        return ResponseEntity.ok(signedUpUser); // Return the newly created user in the response body
+        User signedUpUser = userService.addUser(userDTO); // Call the user_id service to add a new user_id
+        return ResponseEntity.ok(signedUpUser); // Return the newly created user_id in the response body
     }
 
     /**
-     * Endpoint to handle user login.
-     * Receives UserLoginDTO object from the request body, authenticates the user,
+     * Endpoint to handle user_id login.
+     * Receives UserLoginDTO object from the request body, authenticates the user_id,
      * generates a JWT token if login is successful, and returns the token with expiration time.
      *
      * @param userLoginDTO Login credentials (email and password).
@@ -50,7 +50,7 @@ public class UserController {
     @PostMapping(path = "/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody UserLoginDTO userLoginDTO)
     {
-        User loggedUser = userService.loginUser(userLoginDTO);  //Authenticate the user
+        User loggedUser = userService.loginUser(userLoginDTO);  //Authenticate the user_id
         String jwtToken = jwtService.generateToken(loggedUser); //Generate the JWT token
 
         // Create a response object containing the token and expiration time
