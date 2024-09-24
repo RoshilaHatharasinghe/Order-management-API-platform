@@ -2,38 +2,59 @@ package com.APIPlatform.API_platform.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    /**
-     * Defines the security filter chain that applies to incoming HTTP requests.
-     * Configures the security settings for the application.
-     *
-     * @param http the HttpSecurity object to configure security details.
-     * @return SecurityFilterChain for securing the web application.
-     * @throws Exception if any configuration error occurs.
-     */
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter
+    ) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Configure Cross-Site Request Forgery (CSRF) protection
-                .csrf(csrf -> csrf
-                        // Ignore CSRF protection for specific endpoints (user signup and login)
-                        .ignoringRequestMatchers("api/v1/user/signup", "api/v1/user/login")
+                .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF protection
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("api/v1/users/**").permitAll()  // Permit all requests to /auth/
+                        .anyRequest().authenticated()  // All other requests require authentication
                 )
-                // Configure access control for different endpoints
-                .authorizeHttpRequests(authorize -> authorize
-                        // Allow unauthenticated access to signup and login APIs
-                        .requestMatchers("api/v1/user/signup", "api/v1/user/login").permitAll()
-                        // Secure all other endpoints
-                        .anyRequest().authenticated()
-                );
-        // Build and return the configured SecurityFilterChain.
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Set session management to stateless
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // Add JWT filter
+
         return http.build();
     }
+
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//
+//        configuration.setAllowedOrigins(List.of("http://localhost:8080"));
+//        configuration.setAllowedMethods(List.of("GET", "POST"));
+//        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//
+//        source.registerCorsConfiguration("/**", configuration);
+//
+//        return source;
+//    }
 }

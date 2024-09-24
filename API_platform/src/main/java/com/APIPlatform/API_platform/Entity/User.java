@@ -1,6 +1,5 @@
 package com.APIPlatform.API_platform.Entity;
 
-import com.APIPlatform.API_platform.Response.LoginResponse;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,9 +15,9 @@ import java.util.List;
 public class User implements UserDetails
 {
     @Id
-    @Column(name="user_id")
+    @Column(name= "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long id;
 
     @Column(name = "first_name", nullable = false)
     private String first_name;
@@ -32,8 +31,8 @@ public class User implements UserDetails
     @Column(name = "password",nullable = false)
     private String password;
 
-    public User(long user_id, String first_name, String last_name, String email, String password) {
-        this.user_id = user_id;
+    public User(long id, String first_name, String last_name, String email, String password) {
+        this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.email = email;
@@ -46,7 +45,7 @@ public class User implements UserDetails
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + user_id +
+                "userId=" + id +
                 ", firstName='" + first_name + '\'' +
                 ", lastName='" + last_name + '\'' +
                 ", email='" + email + '\'' +

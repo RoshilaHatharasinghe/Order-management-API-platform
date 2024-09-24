@@ -7,6 +7,12 @@ public class SignUpResponse {
     private String lastName;
     private String email;
 
+    public SignUpResponse(long id, String email, String firstName, String lastName) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public SignUpResponse() {
 

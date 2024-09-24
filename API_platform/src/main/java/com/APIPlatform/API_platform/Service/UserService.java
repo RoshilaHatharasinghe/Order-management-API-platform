@@ -25,7 +25,7 @@ public class UserService {
 
     public User addUser(UserDTO userDTO) {
         User user = new User(
-                userDTO.getUser_id(),
+                userDTO.getId(),
                 userDTO.getFirst_name(),
                 userDTO.getLast_name(),
                 userDTO.getEmail(),
@@ -46,4 +46,5 @@ public class UserService {
 
         return userRepository.findByEmail(userLoginDTO.getEmail()).orElseThrow();
     }
+
 }

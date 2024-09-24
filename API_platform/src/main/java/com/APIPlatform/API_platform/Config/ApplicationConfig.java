@@ -23,7 +23,7 @@ public class ApplicationConfig {
 
     /**
      * Provides a UserDetailsService bean.
-     * Used by Spring Security to retrieve user details from the database via email.
+     * Used by Spring Security to retrieve user_id details from the database via email.
      * @return UserDetailsService
      */
     @Bean
@@ -56,8 +56,8 @@ public class ApplicationConfig {
 
     /**
      * Provides an AuthenticationProvider bean.
-     * This is responsible for authenticating a user against the database using
-     * the user details and password encoder. It uses the DaoAuthenticationProvider.
+     * This is responsible for authenticating a user_id against the database using
+     * the user_id details and password encoder. It uses the DaoAuthenticationProvider.
      * @return AuthenticationProvider
      */
     @Bean
