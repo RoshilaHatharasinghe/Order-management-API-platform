@@ -53,4 +53,12 @@ public class OrderService {
         return orderRepository.findByUserId(user.getId(), pageable);
     }
 
+    public void dispatchOrders() {
+        List<Order> newOrders = orderRepository.findAllByStatus(OrderStatus.NEW);
+        newOrders.forEach(order -> {
+            order.setStatus(OrderStatus.DISPATCHED);
+            orderRepository.save(order);
+        });
+    }
+
 }
