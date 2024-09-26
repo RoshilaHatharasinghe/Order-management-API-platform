@@ -15,6 +15,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for handling JSON Web Tokens (JWT) operations.
+
+ * This class provides methods to:
+ * - Extract the username from a JWT.
+ * - Generate new JWTs with specified claims and expiration.
+ * - Validate JWTs against a user’s details and check for expiration.
+ * - Extract claims, expiration dates, and other properties from the JWT.
+
+ * It uses a secret key and expiration time defined in the application properties
+ * to sign and validate the tokens securely.
+ */
+
 @Service
 public class JWTService {
 

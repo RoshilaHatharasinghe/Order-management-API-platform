@@ -3,6 +3,8 @@ package com.APIPlatform.API_platform.DTO;
 import com.APIPlatform.API_platform.Entity.OrderStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,12 +12,17 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-public class OrderDTO {
+public class OrderRequestDTO {
 
     private Long id;
 
+    @NotEmpty
     private String itemName;
+
+    @NotNull
     private int quantity;
+
+    @NotEmpty
     private String shippingAddress;
 
     @Enumerated(EnumType.STRING)
@@ -25,7 +32,7 @@ public class OrderDTO {
 
     private Long user_id;
 
-    public OrderDTO(Long id, String itemName, int quantity, String shippingAddress, OrderStatus status, LocalDateTime placementTimestamp, Long user_id) {
+    public OrderRequestDTO(Long id, String itemName, int quantity, String shippingAddress, OrderStatus status, LocalDateTime placementTimestamp, Long user_id) {
         this.id = id;
         this.itemName = itemName;
         this.quantity = quantity;
@@ -35,7 +42,7 @@ public class OrderDTO {
         this.user_id = user_id;
     }
 
-    public OrderDTO() {
+    public OrderRequestDTO() {
     }
 
     @Override

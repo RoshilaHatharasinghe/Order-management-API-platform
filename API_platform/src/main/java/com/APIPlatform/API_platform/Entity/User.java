@@ -20,10 +20,10 @@ public class User implements UserDetails
     private Long id;
 
     @Column(name = "first_name", nullable = false)
-    private String first_name;
+    private String firstName;
 
     @Column(name = "last_name", nullable = false)
-    private String last_name;
+    private String lastName;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -31,10 +31,10 @@ public class User implements UserDetails
     @Column(name = "password",nullable = false)
     private String password;
 
-    public User(long id, String first_name, String last_name, String email, String password) {
+    public User(long id, String firstName, String lastName, String email, String password) {
         this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
     }
@@ -46,8 +46,8 @@ public class User implements UserDetails
     public String toString() {
         return "User{" +
                 "userId=" + id +
-                ", firstName='" + first_name + '\'' +
-                ", lastName='" + last_name + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
