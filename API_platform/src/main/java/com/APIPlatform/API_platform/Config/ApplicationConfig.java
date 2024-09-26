@@ -45,7 +45,7 @@ public class ApplicationConfig {
     /**
      * Provides an AuthenticationManager bean.
      * This is a central interface for Spring Security's authentication process.
-     * @param config The AuthenticationConfiguration, auto-configured by Spring Security.
+     * @param config The AuthenticationConfiguration, autoconfigured by Spring Security.
      * @return AuthenticationManager
      * @throws Exception if authentication manager could not be provided
      */

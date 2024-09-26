@@ -1,12 +1,14 @@
 package com.APIPlatform.API_platform.Controller;
 
-import com.APIPlatform.API_platform.DTO.UserDTO;
+import com.APIPlatform.API_platform.DTO.LoginResponseDTO;
+import com.APIPlatform.API_platform.DTO.SignupRequestDTO;
 import com.APIPlatform.API_platform.DTO.UserLoginDTO;
 import com.APIPlatform.API_platform.Entity.User;
-import com.APIPlatform.API_platform.Response.LoginResponse;
-import com.APIPlatform.API_platform.Response.SignUpResponse;
+import com.APIPlatform.API_platform.DTO.SignUpResponseDTO;
+import com.APIPlatform.API_platform.Response.SuccessResponse;
 import com.APIPlatform.API_platform.Service.JWTService;
 import com.APIPlatform.API_platform.Service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,36 +28,43 @@ public class UserController {
     }
 
     /**
-     * Endpoint to handle user_id sign-up.
-     * Receives a UserDTO object from the request body and adds the user_id to the system.
-     *
-     * @param userDTO User details for sign-up.
-     * @return ResponseEntity containing the created User entity.
+     * Endpoint for user signup.
+     * Handles the creation of a new user and returns the user's signup details.
      */
-    @PostMapping(path = "/signup")
-    public ResponseEntity<User> signupUser(@RequestBody UserDTO userDTO)
-    {
-        User signedUpUser = userService.addUser(userDTO); // Call the user_id service to add a new user_id
-        return ResponseEntity.ok(signedUpUser); // Return the newly created user_id in the response body
+    @PostMapping(path = "/signup", produces = "application/json")
+    public ResponseEntity<SuccessResponse> signupUser(@Valid @RequestBody SignupRequestDTO signupRequestDTO) {
+
+        User newUser = userService.addUser(signupRequestDTO);
+
+        // Build the signup response object
+        SignUpResponseDTO signUpResponse = new SignUpResponseDTO()
+                .setId(newUser.getId())
+                .setEmail(newUser.getEmail())
+                .setFirstName(newUser.getFirstName())
+                .setLastName(newUser.getLastName());
+
+        SuccessResponse response = new SuccessResponse(signUpResponse);
+        return ResponseEntity.ok(response);
     }
 
     /**
-     * Endpoint to handle user_id login.
-     * Receives UserLoginDTO object from the request body, authenticates the user_id,
-     * generates a JWT token if login is successful, and returns the token with expiration time.
-     *
-     * @param userLoginDTO Login credentials (email and password).
-     * @return ResponseEntity containing the LoginResponse with the JWT token and expiration time.
+     * Endpoint for user login.
+     * Authenticates the user and generates a JWT token for further requests.
      */
-    @PostMapping(path = "/login")
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody UserLoginDTO userLoginDTO)
+    @PostMapping(path = "/login", produces = "application/json")
+    public ResponseEntity<SuccessResponse> loginUser(@RequestBody UserLoginDTO userLoginDTO)
     {
-        User loggedUser = userService.loginUser(userLoginDTO);  //Authenticate the user_id
-        String jwtToken = jwtService.generateToken(loggedUser); //Generate the JWT token
+        User loggedUser = userService.loginUser(userLoginDTO);
 
-        // Create a response object containing the token and expiration time
-        LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
+        // Generate a JWT token for the authenticated user
+        String jwtToken = jwtService.generateToken(loggedUser);
 
-        return ResponseEntity.ok(loginResponse);
+        // Build the login response object with token and expiration time
+        LoginResponseDTO loginResponse = new LoginResponseDTO()
+                .setToken(jwtToken)
+                .setExpiresIn(jwtService.getExpirationTime());
+
+        SuccessResponse successResponse = new SuccessResponse(loginResponse);
+        return ResponseEntity.ok(successResponse);
     }
 }
