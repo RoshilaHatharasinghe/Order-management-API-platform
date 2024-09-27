@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: customerOrders
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
+  app:
+    image: api-platform
+    depends_on:
+      - mysqldb
+    build: ./API_platform
+    restart: on-failure
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/customerOrders?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
