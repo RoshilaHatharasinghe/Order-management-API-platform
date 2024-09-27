@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class User implements UserDetails
 
     @Column(name = "password",nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private final List<Order> orders = new ArrayList<>();
 
     public User(long id, String firstName, String lastName, String email, String password) {
         this.id = id;

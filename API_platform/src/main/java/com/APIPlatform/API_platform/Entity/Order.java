@@ -19,7 +19,7 @@ public class Order {
     @Column(nullable = false)
     private String referenceNumber;
 
-    @Column(nullable = false)
+    @Column(name="item_name",nullable = false)
     private String itemName;
 
     @Column(nullable = false)
@@ -29,9 +29,11 @@ public class Order {
     private String shippingAddress;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    @Column(nullable = false)
+    private OrderStatus status = OrderStatus.NEW;
 
-    private LocalDateTime placementTimestamp;
+    @Column(name = "placement_timestamp", nullable = false)
+    private LocalDateTime placementTimestamp = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
